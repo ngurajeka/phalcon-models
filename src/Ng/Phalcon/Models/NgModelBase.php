@@ -86,6 +86,7 @@ abstract class NgModelBase extends Model implements NgModelInterface
 
     public function beforeValidationOnCreate()
     {
+        /** @type NgModelInterface $class */
         $class  = get_called_class();
         $field  = $class::getCreatedTimeField();
         if (!empty($field)) {
@@ -105,6 +106,7 @@ abstract class NgModelBase extends Model implements NgModelInterface
 
     public function beforeValidationOnUpdate()
     {
+        /** @type NgModelInterface $class */
         $class  = get_called_class();
         $field  = $class::getUpdatedTimeField();
         if (!empty($field)) {

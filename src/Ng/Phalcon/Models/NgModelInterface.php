@@ -13,8 +13,6 @@
 namespace Ng\Phalcon\Models;
 
 
-use Phalcon\Mvc\Model\TransactionInterface;
-
 /**
  * Model Interface
  *
