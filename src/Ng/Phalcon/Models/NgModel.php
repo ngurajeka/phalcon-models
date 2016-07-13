@@ -8,13 +8,18 @@
  * @package  Library
  * @author   Ady Rahmat MA <adyrahmatma@gmail.com>
  * @license  MIT https://opensource.org/licenses/MIT
- * @link     https://github.com/ngurajeka/phalcon-crud
+ * @link     https://github.com/ngurajeka/phalcon-models
  */
 namespace Ng\Phalcon\Models;
 
 
+use Ng\Phalcon\Models\Interfaces\NgModel;
+use Ng\Phalcon\Models\Interfaces\NgModelHistorical;
+use Ng\Phalcon\Models\Traits\Historical;
+use Ng\Phalcon\Models\Traits\Hooks;
+use Ng\Phalcon\Models\Traits\SoftDelete;
+
 use Phalcon\Mvc\Model;
-use Phalcon\Mvc\Model\Behavior\SoftDelete;
 
 /**
  * Model Base
@@ -23,19 +28,11 @@ use Phalcon\Mvc\Model\Behavior\SoftDelete;
  * @package  Library
  * @author   Ady Rahmat MA <adyrahmatma@gmail.com>
  * @license  MIT https://opensource.org/licenses/MIT
- * @link     https://github.com/ngurajeka/phalcon-crud
+ * @link     https://github.com/ngurajeka/phalcon-models
  */
-abstract class NgModelBase extends Model implements NgModelInterface
+abstract class NgModelBase extends Model implements NgModel, NgModelHistorical
 {
-    const ID            = "id";
-
-    const CREATED_AT    = "createdTime";
-    const CREATED_BY    = "createdBy";
-    const UPDATED_AT    = "updatedTime";
-    const UPDATED_BY    = "updatedBy";
-    const DELETED       = "deleted";
-    const DELETED_AT    = "deletedTime";
-    const DELETED_BY    = "deletedBy";
+    use Historical, Hooks, SoftDelete;
 
     const PROPERTY_NOTFOUND = "Property %s Was Not Found";
 
@@ -63,40 +60,16 @@ abstract class NgModelBase extends Model implements NgModelInterface
 
     public function initialize()
     {
-        if ($this->useSoftDelete() === true) {
+        if ($this::useSoftDelete() === true) {
             $this->implementSoftDelete();
         }
     }
 
-    protected function implementSoftDelete()
-    {
-        /** @type NgModelInterface $class */
-        $class = get_called_class();
-        if (!empty($class::getDeletedField())) {
-            return;
-        }
-
-        $opt = array(
-            'field' => $class::getDeletedField(),
-            'value' => self::VALUE_DEL,
-        );
-
-        $this->addBehavior(new SoftDelete($opt));
-    }
-
     public function beforeValidationOnCreate()
     {
-        /** @type NgModelInterface $class */
-        $class  = get_called_class();
-        $field  = $class::getCreatedTimeField();
-        if (!empty($field)) {
-            $this->{$field} = date("Y-m-d H:i:s");
-        }
-
-        $field  = $class::getDeletedField();
-        if (!empty($field)) {
-            $this->{$field} = NgModelInterface::VALUE_NOTDEL;
-        }
+        $this->hookCreatedTime();
+        $this->hookUpdatedTime();
+        $this->hookDeleted();
     }
 
     public function beforeCreate()
@@ -106,12 +79,7 @@ abstract class NgModelBase extends Model implements NgModelInterface
 
     public function beforeValidationOnUpdate()
     {
-        /** @type NgModelInterface $class */
-        $class  = get_called_class();
-        $field  = $class::getUpdatedTimeField();
-        if (!empty($field)) {
-            $this->{$field} = date("Y-m-d H:i:s");
-        }
+        $this->hookUpdatedTime();
     }
 
     public function beforeUpdate()
@@ -119,14 +87,10 @@ abstract class NgModelBase extends Model implements NgModelInterface
         $this->beforeValidationOnUpdate();
     }
 
-    public function useSoftDelete()
-    {
-        return true;
-    }
-
     public function getId()
     {
-        $func = sprintf("get%s", ucfirst($this->transformKey(self::ID)));
+        $id     = $this::getIdField();
+        $func   = sprintf("get%s", ucfirst($id));
         return $this->$func();
     }
 
@@ -137,64 +101,62 @@ abstract class NgModelBase extends Model implements NgModelInterface
 
     public static function getPrimaryKey()
     {
-        return self::transformKey(self::ID);
+        return self::transformKey(NgModel::ID);
     }
 
     // get public fields
     public static function getPublicFields()
     {
         return array(
-            self::transformKey(self::ID), self::transformKey(self::CREATED_AT)
+            self::getIdField(), self::transformKey(NgModel::CREATED_AT)
         );
     }
 
     // get created by field
     public static function getCreatedByField()
     {
-        return self::transformKey(self::CREATED_BY);
+        return self::transformKey(NgModel::CREATED_BY);
     }
 
     // get created time field
     public static function getCreatedTimeField()
     {
-        return self::transformKey(self::CREATED_AT);
+        return self::transformKey(NgModel::CREATED_AT);
     }
 
     // get updated by field
     public static function getUpdatedByField()
     {
-        return self::transformKey(self::UPDATED_BY);
+        return self::transformKey(NgModel::UPDATED_BY);
     }
     // get updated time field
     public static function getUpdatedTimeField()
     {
-        return self::transformKey(self::UPDATED_AT);
+        return self::transformKey(NgModel::UPDATED_AT);
     }
 
     // get deleted field
     public static function getDeletedField()
     {
-        return self::transformKey(self::DELETED);
+        return self::transformKey(NgModel::DELETED);
     }
 
     // get deleted by field
     public static function getDeletedByField()
     {
-        return self::transformKey(self::DELETED_BY);
+        return self::transformKey(NgModel::DELETED_BY);
     }
 
     // get deleted time field
     public static function getDeletedTimeField()
     {
-        return self::transformKey(self::DELETED_AT);
+        return self::transformKey(NgModel::DELETED_AT);
     }
 
     protected static function transformKey($key)
     {
-        /** @type NgModelInterface $class */
-        $class      = get_called_class();
-        if (!empty($class::getPrefix()))  {
-            $key    = sprintf("%s%s", $class::getPrefix(), ucfirst($key));
+        if (!empty(self::getPrefix()))  {
+            $key    = sprintf("%s%s", self::getPrefix(), ucfirst($key));
         }
 
         return $key;

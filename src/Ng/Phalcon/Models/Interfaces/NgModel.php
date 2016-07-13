@@ -10,7 +10,7 @@
  * @license  MIT https://opensource.org/licenses/MIT
  * @link     https://github.com/ngurajeka/phalcon-crud
  */
-namespace Ng\Phalcon\Models;
+namespace Ng\Phalcon\Models\Interfaces;
 
 
 /**
@@ -22,16 +22,26 @@ namespace Ng\Phalcon\Models;
  * @license  MIT https://opensource.org/licenses/MIT
  * @link     https://github.com/ngurajeka/phalcon-crud
  */
-interface NgModelInterface
+interface NgModel
 {
+    const ID            = "id";
+
+    const CREATED_AT    = "createdTime";
+    const CREATED_BY    = "createdBy";
+    const UPDATED_AT    = "updatedTime";
+    const UPDATED_BY    = "updatedBy";
+    const DELETED       = "deleted";
+    const DELETED_AT    = "deletedTime";
+    const DELETED_BY    = "deletedBy";
+
     const VALUE_DEL     = 1;
     const VALUE_NOTDEL  = 0;
 
-    // is this model want to implement soft delete behaviour
-    public function useSoftDelete();
-
-    // get primary key value from the model
+    // get the id value from the model
     public function getId();
+
+    // is this model want to implement soft delete behaviour
+    public static function useSoftDelete();
 
     // is this model using prefix
     public static function getPrefix();
