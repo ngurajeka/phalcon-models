@@ -13,7 +13,7 @@
 namespace Ng\Phalcon\Models;
 
 
-use Ng\Phalcon\Models\Interfaces\NgModel;
+use Ng\Phalcon\Models\Interfaces\NgModel as NgModelInterface;
 use Ng\Phalcon\Models\Interfaces\NgModelHistorical;
 use Ng\Phalcon\Models\Traits\Historical;
 use Ng\Phalcon\Models\Traits\Hooks;
@@ -30,7 +30,7 @@ use Phalcon\Mvc\Model;
  * @license  MIT https://opensource.org/licenses/MIT
  * @link     https://github.com/ngurajeka/phalcon-models
  */
-abstract class NgModelBase extends Model implements NgModel, NgModelHistorical
+abstract class NgModel extends Model implements NgModelInterface, NgModelHistorical
 {
     use Historical, Hooks, SoftDelete;
 
@@ -101,56 +101,56 @@ abstract class NgModelBase extends Model implements NgModel, NgModelHistorical
 
     public static function getPrimaryKey()
     {
-        return self::transformKey(NgModel::ID);
+        return self::transformKey(NgModelInterface::ID);
     }
 
     // get public fields
     public static function getPublicFields()
     {
         return array(
-            self::getIdField(), self::transformKey(NgModel::CREATED_AT)
+            self::getIdField(), self::transformKey(NgModelInterface::CREATED_AT)
         );
     }
 
     // get created by field
     public static function getCreatedByField()
     {
-        return self::transformKey(NgModel::CREATED_BY);
+        return self::transformKey(NgModelInterface::CREATED_BY);
     }
 
     // get created time field
     public static function getCreatedTimeField()
     {
-        return self::transformKey(NgModel::CREATED_AT);
+        return self::transformKey(NgModelInterface::CREATED_AT);
     }
 
     // get updated by field
     public static function getUpdatedByField()
     {
-        return self::transformKey(NgModel::UPDATED_BY);
+        return self::transformKey(NgModelInterface::UPDATED_BY);
     }
     // get updated time field
     public static function getUpdatedTimeField()
     {
-        return self::transformKey(NgModel::UPDATED_AT);
+        return self::transformKey(NgModelInterface::UPDATED_AT);
     }
 
     // get deleted field
     public static function getDeletedField()
     {
-        return self::transformKey(NgModel::DELETED);
+        return self::transformKey(NgModelInterface::DELETED);
     }
 
     // get deleted by field
     public static function getDeletedByField()
     {
-        return self::transformKey(NgModel::DELETED_BY);
+        return self::transformKey(NgModelInterface::DELETED_BY);
     }
 
     // get deleted time field
     public static function getDeletedTimeField()
     {
-        return self::transformKey(NgModel::DELETED_AT);
+        return self::transformKey(NgModelInterface::DELETED_AT);
     }
 
     protected static function transformKey($key)
