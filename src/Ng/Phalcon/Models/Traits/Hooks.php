@@ -13,7 +13,7 @@
 namespace Ng\Phalcon\Models\Traits;
 
 
-use Ng\Phalcon\Models\Interfaces\NgModel;
+use Ng\Phalcon\Models\Interfaces\NgModelSoftDelete;
 
 /**
  * Hooks Traits
@@ -29,7 +29,7 @@ trait Hooks
     protected function hookCreatedTime()
     {
         // check created time, and set to now if empty
-        if (!method_exists($this, "getCreatedTime")) {
+        if (!method_exists($this, "getCreatedTimeField")) {
             return;
         }
 
@@ -95,6 +95,6 @@ trait Hooks
             return;
         }
 
-        $this->{$field} = NgModel::VALUE_NOTDEL;
+        $this->{$field} = NgModelSoftDelete::VALUE_NOTDEL;
     }
 }

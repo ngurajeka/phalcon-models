@@ -24,52 +24,42 @@ namespace Ng\Phalcon\Models\Interfaces;
  */
 interface NgModel
 {
-    const ID            = "id";
+    const ID = "id";
 
-    const CREATED_AT    = "createdTime";
-    const CREATED_BY    = "createdBy";
-    const UPDATED_AT    = "updatedTime";
-    const UPDATED_BY    = "updatedBy";
-    const DELETED       = "deleted";
-    const DELETED_AT    = "deletedTime";
-    const DELETED_BY    = "deletedBy";
-
-    const VALUE_DEL     = 1;
-    const VALUE_NOTDEL  = 0;
-
-    // get the id value from the model
+    /**
+     * Get the id value from the model
+     *
+     * @return int
+     */
     public function getId();
 
-    // is this model want to implement soft delete behaviour
-    public static function useSoftDelete();
-
-    // is this model using prefix
+    /**
+     * Get the model prefix
+     *
+     * @return string
+     */
     public static function getPrefix();
 
-    // get primary key
+    /**
+     * Transform a key / attribute / property with the model prefix
+     *
+     * @param string $key
+     *
+     * @return string
+     */
+    public static function transformKey($key);
+
+    /**
+     * Get primary key
+     *
+     * @return string
+     */
     public static function getPrimaryKey();
 
-    // get public fields
+    /**
+     * Get public fields
+     *
+     * @return array
+     */
     public static function getPublicFields();
-
-    // get created by field
-    public static function getCreatedByField();
-
-    // get created time field
-    public static function getCreatedTimeField();
-
-    // get updated by field
-    public static function getUpdatedByField();
-
-    // get updated time field
-    public static function getUpdatedTimeField();
-
-    // get deleted field
-    public static function getDeletedField();
-
-    // get deleted by field
-    public static function getDeletedByField();
-
-    // get deleted time field
-    public static function getDeletedTimeField();
 }
