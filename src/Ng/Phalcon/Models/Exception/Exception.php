@@ -8,9 +8,9 @@
  * @package  Library
  * @author   Ady Rahmat MA <adyrahmatma@gmail.com>
  * @license  MIT https://opensource.org/licenses/MIT
- * @link     https://github.com/ngurajeka/phalcon-crud
+ * @link     https://github.com/ngurajeka/phalcon-models
  */
-namespace Ng\Phalcon\Models;
+namespace Ng\Phalcon\Models\Exception;
 
 
 /**
@@ -20,7 +20,7 @@ namespace Ng\Phalcon\Models;
  * @package  Library
  * @author   Ady Rahmat MA <adyrahmatma@gmail.com>
  * @license  MIT https://opensource.org/licenses/MIT
- * @link     https://github.com/ngurajeka/phalcon-crud
+ * @link     https://github.com/ngurajeka/phalcon-models
  */
 class Exception extends \Exception
 {
