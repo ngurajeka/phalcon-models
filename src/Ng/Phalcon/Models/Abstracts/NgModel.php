@@ -134,8 +134,13 @@ abstract class NgModel extends Model implements NgModelInterface, NgModelSoftDel
      */
     public static function transformKey($key)
     {
-        if (!empty(self::getPrefix())) {
-            $key    = sprintf("%s%s", self::getPrefix(), ucfirst($key));
+        $class      = get_called_class();
+        if (!method_exists($class, "getPrefix")) {
+            return $key;
+        }
+
+        if (!empty($class::getPrefix())) {
+            $key    = sprintf("%s%s", $class::getPrefix(), ucfirst($key));
         }
 
         return $key;
