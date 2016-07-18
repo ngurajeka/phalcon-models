@@ -111,7 +111,7 @@ abstract class NgModel extends Model implements NgModelInterface, NgModelSoftDel
      */
     public function getId()
     {
-        $field  = self::transformKey(self::getPrimaryKey());
+        $field = self::getPrimaryKey();
         return (int) $this->{$field};
     }
 
