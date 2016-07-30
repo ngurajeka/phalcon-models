@@ -54,16 +54,18 @@ abstract class NgModel extends Model implements NgModelInterface, NgModelSoftDel
         $field  = lcfirst(substr($method, 3));
         $return = $this;
 
-        if (!array_key_exists($field, get_object_vars($this))) {
-            throw new Exception(sprintf(self::PROPERTY_NOTFOUND, $field));
-        }
-
         switch ($key) {
         case "get":
             $return         = $this->{$field};
             break;
         case "set":
             $this->{$field} = $arguments[0];
+            break;
+        default:
+            if (!array_key_exists($field, get_object_vars($this))) {
+                throw new Exception(sprintf(self::PROPERTY_NOTFOUND, $field));
+            }
+            throw new Exception("Only Get and Set has Magic Method");
             break;
         }
 
