@@ -43,7 +43,7 @@ trait Hooks
             return;
         }
 
-        if (is_null($this->{$field})) {
+        if (!is_null($this->{$field})) {
             return;
         }
 
@@ -67,7 +67,7 @@ trait Hooks
             return;
         }
 
-        if (is_null($this->{$field})) {
+        if (!is_null($this->{$field})) {
             return;
         }
 
@@ -91,7 +91,7 @@ trait Hooks
             return;
         }
 
-        if (is_null($this->{$field})) {
+        if (!is_null($this->{$field})) {
             return;
         }
 
