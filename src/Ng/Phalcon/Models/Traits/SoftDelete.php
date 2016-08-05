@@ -117,7 +117,7 @@ trait SoftDelete
      */
     protected function implementSoftDelete()
     {
-        if (!method_exists($this, "addBehaviour")) {
+        if (!method_exists($this, "addBehavior")) {
             return;
         }
 
