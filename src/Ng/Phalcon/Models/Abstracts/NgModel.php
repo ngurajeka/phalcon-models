@@ -167,4 +167,9 @@ abstract class NgModel extends Model implements NgModelInterface, NgModelSoftDel
     {
         return array(self::getPrimaryKey());
     }
+
+    public function getAllFields()
+    {
+        return get_object_vars($this);
+    }
 }
