@@ -54,6 +54,10 @@ abstract class NgModel extends Model implements NgModelInterface, NgModelSoftDel
         $field  = lcfirst(substr($method, 3));
         $return = $this;
 
+        if (!array_key_exists($field, $this->getAllFields())) {
+            throw new Exception(sprintf(self::PROPERTY_NOTFOUND, $field));
+        }
+
         switch ($key) {
         case "get":
             $return         = $this->{$field};
@@ -62,9 +66,6 @@ abstract class NgModel extends Model implements NgModelInterface, NgModelSoftDel
             $this->{$field} = $arguments[0];
             break;
         default:
-            if (!array_key_exists($field, get_object_vars($this))) {
-                throw new Exception(sprintf(self::PROPERTY_NOTFOUND, $field));
-            }
             throw new Exception("Only Get and Set has Magic Method");
             break;
         }
@@ -170,6 +171,13 @@ abstract class NgModel extends Model implements NgModelInterface, NgModelSoftDel
 
     public function getAllFields()
     {
-        return get_object_vars($this);
+        $exclude = array(
+            '_dependencyInjector', '_modelsManager', '_modelsMetaData',
+            '_errorMessages', '_operationMade', '_dirtyState', '_transaction',
+            '_uniqueKey', '_uniqueParams', '_uniqueTypes', '_skipped',
+            '_related', '_snapshot',
+        );
+
+        return array_diff(array_keys(get_object_vars($this)), $exclude);
     }
 }
