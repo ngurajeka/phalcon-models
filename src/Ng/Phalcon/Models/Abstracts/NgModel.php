@@ -54,7 +54,7 @@ abstract class NgModel extends Model implements NgModelInterface, NgModelSoftDel
         $field  = lcfirst(substr($method, 3));
         $return = $this;
 
-        if (!array_key_exists($field, $this->getAllFields())) {
+        if (!in_array($field, $this->getAllFields())) {
             throw new Exception(sprintf(self::PROPERTY_NOTFOUND, $field));
         }
 
