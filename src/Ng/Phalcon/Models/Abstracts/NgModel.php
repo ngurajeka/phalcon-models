@@ -64,9 +64,9 @@ abstract class NgModel extends Model implements NgModelInterface,
 			throw new \InvalidArgumentException(
 				"Only Getter and Setter are handled"
 			);
-            break;
-        }
-    }
+			break;
+		}
+	}
 
 	/**
 	 * Magic Method Set
