@@ -169,7 +169,10 @@ abstract class NgModel extends Model implements NgModelInterface, NgModelSoftDel
         return array(self::getPrimaryKey());
     }
 
-    public function getAllFields()
+	/**
+	 * @return array
+	 */
+	public function getAllFields()
     {
         $exclude = array(
             '_dependencyInjector', '_modelsManager', '_modelsMetaData',
@@ -180,4 +183,22 @@ abstract class NgModel extends Model implements NgModelInterface, NgModelSoftDel
 
         return array_diff(array_keys(get_object_vars($this)), $exclude);
     }
+
+	/**
+	 * @param Model\Row $row
+	 *
+	 * @return NgModel
+	 */
+	public static function rowBuilder(Model\Row $row)
+	{
+		/** @var NgModel $class */
+		$class	= get_called_class();
+		$class	= new $class();
+		foreach ($class::getPublicFields() as $field) {
+			$func	= sprintf("set%s", ucfirst($field));
+			$class->$func($row->readAttribute($field));
+		}
+
+		return $class;
+	}
 }
