@@ -235,7 +235,7 @@ abstract class NgModel extends Model implements NgModelInterface,
 		/** @var NgModel $class */
 		$class	= get_called_class();
 		$class	= new $class();
-		foreach ($class::getAllFields() as $field) {
+		foreach ($class->getAllFields() as $field) {
 			$func	= sprintf("set%s", ucfirst($field));
 			$class->$func($row->readAttribute($field));
 		}
