@@ -80,7 +80,7 @@ abstract class NgModel extends Model implements NgModelInterface,
 	 */
 	public function __set($name, $value)
 	{
-		$field	= strtolower($name);
+		$field	= lcfirst($name);
 		if (!property_exists($this, $field)) {
 			throw new \InvalidArgumentException("'$field' was not found");
 		}
@@ -107,7 +107,7 @@ abstract class NgModel extends Model implements NgModelInterface,
 	 */
 	public function __get($name)
 	{
-		$field	= strtolower($name);
+		$field	= lcfirst($name);
 		if (!property_exists($this, $field)) {
 			throw new \InvalidArgumentException("'$field' was not found");
 		}
