@@ -38,6 +38,37 @@ abstract class NgModel extends Model implements NgModelInterface,
 	const PROPERTY_NOTFOUND = "Property %s Was Not Found";
 
 	/**
+	 * Magic Method Call
+	 *
+	 * @param string 	$method	Method that was called
+	 * @param array		$args	Arguments that passed to the method
+	 *
+	 * @throws \BadMethodCallException
+	 * @throws \InvalidArgumentException
+	 *
+	 * @return NgModel|mixed
+	 */
+	public function __call($method, $args)
+	{
+		$_method	= substr($method, 0, 3);
+		$name		= lcfirst(substr($method, 3));
+
+		switch ($_method) {
+		case "get":
+			return $this->__get($name);
+            break;
+        case "set":
+			return $this->__set($name, $args[0]);
+            break;
+        default:
+			throw new \InvalidArgumentException(
+				"Only Getter and Setter are handled"
+			);
+            break;
+        }
+    }
+
+	/**
 	 * Magic Method Set
 	 *
 	 * @param string $name	Field Name
